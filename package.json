@@ -1,0 +1,15 @@
+{
+  "name": "task_3",
+  "version": "1.0.0",
+  "main": "lcs.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "ascii-table": "^0.0.9"
+  }
+}
