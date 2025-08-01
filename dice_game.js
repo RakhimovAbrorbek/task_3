@@ -68,17 +68,6 @@ class SecureRandom {
     return crypto.randomBytes(32);
   }
 
-  static generateNumber(max) {
-    let bytesNeeded = Math.ceil(Math.log2(max + 1) / 8);
-    let maxValid = Math.pow(2, bytesNeeded * 8) - (Math.pow(2, bytesNeeded * 8) % (max + 1));
-    let randomValue;
-    do {
-      let buffer = crypto.randomBytes(bytesNeeded);
-      randomValue = buffer.readUIntBE(0, bytesNeeded);
-    } while (randomValue >= maxValid);
-    return randomValue % (max + 1);
-  }
-
   static computeHMAC(key, number) {
     return crypto.createHmac('sha3-256', key).update(number.toString()).digest('hex').toUpperCase();
   }
@@ -88,7 +77,8 @@ class FairRandomGenerator {
   constructor(max) {
     this.max = max;
     this.key = SecureRandom.generateKey();
-    this.computerNumber = SecureRandom.generateNumber(max);
+    const buffer = crypto.randomBytes(4); // 4 bytes for sufficient randomness
+    this.computerNumber = buffer.readUInt32BE(0) % (max + 1);
     this.hmac = SecureRandom.computeHMAC(this.key, this.computerNumber);
   }
 
